@@ -12,13 +12,13 @@ class ArticleAdmin(admin.ModelAdmin):
     exclude = ('views',)
 
     # 在查看修改的时候显示的属性，第一个字段带有<a>标签，所以最好放标题
-    list_display = ('id', 'title', 'author', 'create_date', 'update_date', 'is_top')
+    list_display = ('id', 'title', 'author', 'create_date', 'update_date', 'is_top', 'reviewed')
 
     # 设置需要添加<a>标签的字段
     list_display_links = ('title',)
 
     # 激活过滤器，这个很有用
-    list_filter = ('create_date', 'category', 'is_top')
+    list_filter = ('create_date', 'category', 'is_top', 'reviewed')
 
     list_per_page = 50  # 控制每页显示的对象数量，默认是100
 
@@ -39,7 +39,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'id', 'slug')
+    list_display = ('name', 'id', 'slug', 'parent_category')
 
 
 # 自定义管理站点的名称和URL标题

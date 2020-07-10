@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load blog_tags %}
 
-{% block head_title %}Tend to Code_一个使用django和bootstrap搭建的个人博客{% endblock %}
+{% block head_title %}DayDayUp_一个开阔视野，增加认知，获取美好资源的网站{% endblock %}
 {% block metas %}
     <meta name="description" content="{{ site_description }}">
     <meta name="keywords" content="{{ site_keywords }}">
@@ -15,7 +15,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            {% include 'blog/tags/carousel.html' %}
+{#            {% include 'blog/tags/carousel.html' %}#}
             <div class="text-secondary font-weight-bold py-2 f-15 choice">
                 {% url 'blog:index' as base_index %}
                 {% url 'blog:index_hot' as hot_index %}
@@ -32,4 +32,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block end_file %}
+
 {% endblock %}

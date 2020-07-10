@@ -1,12 +1,14 @@
 {% load static %}
 {% load comment_tags %}
+{% load blog_tags static %}
+
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="referrer" content="origin">
+    <meta name="referrer" content="never">
     <!-- TDK and ICO -->
     <title>{% block head_title %}{% endblock %}_{{ site_end_title }}</title>
     {% block metas %}
@@ -15,11 +17,12 @@
     {% endblock %}
     <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico'%}" type="image/x-icon"/>
     <!-- Bootstrap and font-awesome CSS -->
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js'%}"></script>
     <!-- blog CSS -->
     <link href="{% static 'blog/css/base.css' %}?v=20191123.0568" rel="stylesheet">
+    <link href="{% static "blog/css/bstreeview.min.css" %}" rel="stylesheet">
     {% block top-file %}{% endblock %}
     <!--根据cookies判断是否启用暗色主题-->
     {% if request.COOKIES.toggleTheme == "dark" %}
@@ -50,6 +53,20 @@
     <i class="fa fa-chevron-up" id="btn-top" title="回到顶部"></i>
 </div>
 
+<!--回到首页-->
+<a href="{% url 'blog:index' %}">
+<div class="text-center" id="to-home">
+    <i class="fa fa-home" id="btn-home" title="回到首页"></i>
+</div>
+</a>
+
+<!--变换主题-->
+<div class="text-center" id="theme-toggle">
+<i id="theme-img" title="切换主题" class="fa fa-adjust"></i>
+
+
+</div>
+
 <!--主要内容块-->
 <main>{% block base_content %}{% endblock %}</main>
 <!-- Optional JavaScript -->
@@ -61,8 +78,49 @@
 <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
+
+</script>
+<script src="{% static "blog/js/bstreeview.min.js" %}"></script>
+
+<script>
+    var actuals = JSON.parse('{% get_category_list as cat_list %}  {{cat_list|safe}}')
+    function getChild(cat_id) {
+        var data =[];
+        var child_nodes = actuals.filter(item=>item.fields.parent_category==cat_id);
+        for (var x in child_nodes)
+            {
+                var obj={ text:child_nodes[x].fields.name,
+  href:'/category/'+ child_nodes[x].fields.slug+'/', nodes:getChild(child_nodes[x].pk)};
+                data.push(obj);
+            }
+        return data;
+    }
+
+
+
+    $('#cat_tree').bstreeview({
+        data: getChild(null),
+        openNodeLinkOnNewTab:false
+
+
+    })
+
+    $(window).scroll(function () {
+  //小屏幕下的导航条折叠
+      if ($(window).width() < 768) {
+        //点击导航链接之后，把导航选项折叠起来
+        $("#navbarSupportedContent a").click(function () {
+          $("#navbarSupportedContent").collapse('hide');
+        });
+        //滚动屏幕时，把导航选项折叠起来
+        $(window).scroll(function () {
+          $("#navbarSupportedContent").collapse('hide');
+        });
+  }
+});
 </script>
 <script src="{% static 'blog/js/base.js'%}?v=20191123.0909890"></script>
+
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
@@ -73,7 +131,7 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
         <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info"></span>
-            <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+            <a href="https://space.bilibili.com/455865239" target="_blank" title="博客作者的B站">视频主页</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
         </p>
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>&nbsp;|
@@ -81,7 +139,7 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
             {% if cnzz_protocol %}|&nbsp;{{ cnzz_protocol|safe }}{% endif %}
             <span id="web-day"></span>
         </p>
-        <script>function getnewYear(){var d = new Date();var old = new Date('2018/03/28');
+        <script>function getnewYear(){var d = new Date();var old = new Date('2020/03/28');
             var x = document.getElementById("year-info");
             x.innerHTML=d.getFullYear();var y=document.getElementById("web-day");
             var dd=Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));

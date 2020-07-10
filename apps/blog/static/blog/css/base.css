@@ -144,7 +144,7 @@ blockquote {
 /*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
 #to-top {
     position: fixed;
-    bottom: 6em;
+    bottom: 5em;
     right: 5%;
     height: 36px;
     width: 36px;
@@ -167,6 +167,60 @@ blockquote {
     text-align: center;
     display: block;
 }
+
+/*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
+#to-home {
+    position: fixed;
+    bottom: 2em;
+    right: 5%;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #34495e;
+    top: auto;
+    cursor: pointer;
+    color: #fff;
+    opacity: .4;
+    z-index:9999;
+}
+#to-home:hover{
+    opacity: .9;
+}
+#to-home i {
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+}
+
+
+/*theme-toggle+++++++++++++++++++++++++++++++++++++++++++++++++*/
+#theme-toggle {
+    position: fixed;
+    bottom: 2em;
+    left: 5%;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #34495e;
+    top: auto;
+    cursor: pointer;
+    color: #fff;
+    opacity: .4;
+    z-index:9999;
+}
+#theme-toggle:hover{
+    opacity: .9;
+}
+#theme-toggle i {
+    font-size: 22px;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+}
+
 /*carousel---------------------------------------------*/
 .carousel-indicators li {
     width: 10px;

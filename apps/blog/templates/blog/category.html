@@ -13,11 +13,27 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            <div class="description bg-white px-3 pt-3 pb-1">
-                <p class="float-right mb-0">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>
-                <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>
-                <p class="f-16">{{ search_instance.description }}</p>
-            </div>
+{#            <div class="description bg-white px-3 pt-3 pb-1">#}
+{#                <p class="float-right mb-0">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>#}
+{#                <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>#}
+{#                <p class="f-16">{{ search_instance.description }}</p>#}
+{#            </div>#}
+                        <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
+                        <li class="breadcrumb-item">
+                            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                        </li>
+                        {% for cat in search_instance.get_parent_categorys %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ cat.get_absolute_url }}">{{ cat }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="breadcrumb-item">
+                            <a href="{{ search_instance.get_absolute_url }}">{{ search_instance }}</a>
+                        </li>
+
+                    </ol>
+                </nav>
             <div class="text-secondary font-weight-bold py-2 f-15 choice">
                 {% url 'blog:category' search_instance.slug as base_category %}
                 {% url 'blog:category_hot' search_instance.slug as hot_category %}

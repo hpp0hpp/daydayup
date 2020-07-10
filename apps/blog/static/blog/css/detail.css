@@ -83,9 +83,9 @@ pre {
 .more-blog {
     text-align: center;
     position: fixed;
-    top: 50%;
+    bottom: 10em;
     z-index: 88;
-    color: #ccc;
+    color: #888888;
 }
 .more-blog a {
     padding: 5rem 1rem;

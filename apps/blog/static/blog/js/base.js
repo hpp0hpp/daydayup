@@ -65,13 +65,15 @@ $("#theme-img").click(function(){
     var theme_key = "toggleTheme";
     var theme_value = Cookies.get(theme_key);
     if (theme_value == "dark"){
-        $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
+        // $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
         Cookies.set(theme_key, "light", { expires: 180, path: '/' });
         removeDarkTheme();
     } else {
-        $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
+        // $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
         Cookies.set(theme_key, "dark", { expires: 180, path: '/' });
         addDarkTheme();
     }
 })
+
+
 

@@ -1,8 +1,8 @@
 {% load static %}
 <div class="text-center">
-    <button class="btn btn-danger rounded-0" data-toggle="collapse" data-target=".multi-collapse"
+    <button id="reward" class="btn btn-danger btn-lg btn-block rounded" data-toggle="collapse" data-target=".multi-collapse"
             aria-expanded="false" aria-controls="sponsor-zfb sponsor-wx"
-            style="line-height: 1;font-size: .8rem;">
+            style="line-height: 1;font-size: 1.6rem;">
         <i class="fa fa-cny"></i>
         如果文章对你有所帮助，可以赞助本站
         <i class="fa fa-chevron-down"></i>
@@ -12,13 +12,19 @@
     <div class="col text-center">
         <div class="collapse multi-collapse" id="sponsor-wx">
             <div class="p-1 text-success">微信</div>
-            <img class="w-75" src="{% static 'blog/img/reward_wx.png' %}">
+            <img class="w-50 rounded" src="{% static 'blog/img/reward_wx.png' %}">
+        </div>
+    </div>
+        <div class="col text-center">
+        <div class="collapse multi-collapse" id="sponsor-wx">
+            <div class="p-1 text-danger">关注公众号</div>
+            <img class="w-50 rounded" src="{% static 'blog/img/wx_qrcode.jpg' %}">
         </div>
     </div>
     <div class="col text-center">
         <div class="collapse multi-collapse" id="sponsor-zfb">
             <div class="p-1 text-primary">支付宝</div>
-            <img class="w-75" src="{% static 'blog/img/reward_zfb.png' %}">
+            <img class="w-50 rounded" src="{% static 'blog/img/reward_zfb.png' %}">
         </div>
     </div>
 </div>

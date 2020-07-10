@@ -187,6 +187,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_PAGE_BY = 10
 BASE_ORPHANS = 5
 
+NEED_REVIEWED = True
+
 # 全文搜索应用配置
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -207,20 +209,21 @@ REST_FRAMEWORK = {
 
 # 配置数据库
 MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
-MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'izone')
-MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'root')
-MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', 'python')
+MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'daydayup')
+MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'hpp')
+MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', '132435')
 MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': MYSQL_NAME,  # 数据库的名称
-        'USER': MYSQL_USER,  # 数据库的用户名
-        'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
-        'HOST': MYSQL_HOST,
-        'PORT': MYSQL_PORT,
-        'OPTIONS': {'charset': 'utf8'}
+
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
+         'NAME': MYSQL_NAME,  # 数据库的名称
+         'USER': MYSQL_USER,  # 数据库的用户名
+         'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
+         'HOST': MYSQL_HOST,
+         'PORT': MYSQL_PORT,
+         'OPTIONS': {'charset': 'utf8'}
     }
 }
 
@@ -233,7 +236,7 @@ CACHES = {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://{}:{}".format(REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
@@ -258,16 +261,16 @@ EMAIL_USE_SSL = os.getenv('IZONE_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
 DEFAULT_FROM_EMAIL = os.getenv('IZONE_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
 
 # 网站默认设置和上下文信息
-SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'TendCode')
-SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'izone')
-SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
-SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
+SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'DayDayUp')
+SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'DayDayUp')
+SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', '这是一个集合真实有用，深度文章，精华资源，天天向上的网站')
+SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', '众包博客')
 
 # 个性化设置，非必要信息
 # 个人 Github 地址
-MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
+MY_GITHUB = os.getenv('IZONE_GITHUB','https://space.bilibili.com/455865239')
 # 工信部备案信息
-BEIAN = os.getenv('IZONE_BEIAN', '网站备案信息')
+BEIAN = os.getenv('IZONE_BEIAN', '粤ICP备20059594号')
 # 站长统计（友盟）
 CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
 # 站长推送

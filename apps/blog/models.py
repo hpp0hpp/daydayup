@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import reverse
 import markdown
 import re
-
+# from izone import  settings
 
 # Create your models here.
 
@@ -15,7 +15,7 @@ class Keyword(models.Model):
         verbose_name = '关键词'
         verbose_name_plural = verbose_name
         ordering = ['name']
-
+        # app_label = 'keyword'
     def __str__(self):
         return self.name
 
@@ -47,8 +47,9 @@ class Tag(models.Model):
 class Category(models.Model):
     name = models.CharField('文章分类', max_length=20)
     slug = models.SlugField(unique=True)
+    parent_category = models.ForeignKey('self',verbose_name='父类', on_delete=models.PROTECT,null=True, blank=True)
     description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
-                                   help_text='用来作为SEO中description,长度参考SEO标准')
+                                   help_text='用来作为SEO中description,长度参考SEO标准', null=True, blank=True)
 
     class Meta:
         verbose_name = '分类'
@@ -64,30 +65,77 @@ class Category(models.Model):
     def get_article_list(self):
         return Article.objects.filter(category=self)
 
+    def get_sub_categorys(self):
+        """
+        获得当前分类目录所有子集
+        :return:
+        """
+        categorys = []
+        all_categorys = Category.objects.all()
 
+        def parse(category):
+            if category not in categorys:
+                categorys.append(category)
+            childs = all_categorys.filter(parent_category=category)
+            for child in childs:
+                if category not in categorys:
+                    categorys.append(child)
+                parse(child)
+
+        parse(self)
+        return categorys
+
+    def get_parent_categorys(self):
+        """
+        获得当前分类目录所有所有父分类层级
+        :return:
+        """
+        categorys = []
+        category =self
+        while category.parent_category:
+            category = category.parent_category
+            categorys.append(category)
+        return categorys[::-1]
+
+# 设置默认需要审阅后才能看见
+class ArticleManager(models.Manager):
+    def get_queryset(self):
+        return super(ArticleManager, self).get_queryset().filter(reviewed=getattr(settings, 'NEED_REVIEWED', True))
 # 文章
 class Article(models.Model):
-    IMG_LINK = '/static/blog/img/summary.png'
+    IMG_LINK = 'article/default.png'
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者', on_delete=models.PROTECT)
     title = models.CharField(max_length=150, verbose_name='文章标题')
-    summary = models.TextField('文章摘要', max_length=230, default='文章摘要等同于网页description内容，请务必填写...')
+    summary = models.TextField('文章摘要', max_length=230, default='文章摘要等同于网页description内容，请务必填写...', null=True, blank=True)
     body = models.TextField(verbose_name='文章内容')
-    img_link = models.CharField('图片地址', default=IMG_LINK, max_length=255)
+    original_url = models.CharField(max_length=250, verbose_name='原文地址', null=True, blank=True)
+    img_link = models.ImageField('图片地址', upload_to='article/%Y/%m/%d', default=IMG_LINK, max_length=255, blank=True)
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     views = models.IntegerField('阅览量', default=0)
     slug = models.SlugField(unique=True)
-    is_top = models.BooleanField('置顶', default=False)
+    is_top = models.BooleanField('置顶', default=False, blank=True)
+    reviewed =models.BooleanField('已审核', default=False, blank=True)
+    share_link = models.CharField('资源链接',max_length=200, blank=True, null=True)
+    share_code = models.CharField('提取密码', max_length=100, blank=True, null=True)
 
-    category = models.ForeignKey(Category, verbose_name='文章分类', on_delete=models.PROTECT)
-    tags = models.ManyToManyField(Tag, verbose_name='标签')
-    keywords = models.ManyToManyField(Keyword, verbose_name='文章关键词',
+
+    category = models.ForeignKey(Category, verbose_name='文章分类', on_delete=models.PROTECT, default=1, blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name='标签', blank=True, null=True)
+    keywords = models.ManyToManyField(Keyword, verbose_name='文章关键词',blank=True, null=True,
                                       help_text='文章关键词，用来作为SEO中keywords，最好使用长尾词，3-4个足够')
 
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = verbose_name
         ordering = ['-create_date']
+
+    @property
+    def img_url(self):
+        if 'http' in self.img_link.url:
+            return self.img_link
+        else:
+            return self.img_link.url
 
     def __str__(self):
         return self.title[:20]
@@ -106,10 +154,10 @@ class Article(models.Model):
         self.save(update_fields=['views'])
 
     def get_pre(self):
-        return Article.objects.filter(id__lt=self.id).order_by('-id').first()
+        return Article.objects.filter(create_date__lt=self.create_date).order_by('-create_date').first()
 
     def get_next(self):
-        return Article.objects.filter(id__gt=self.id).order_by('id').first()
+        return Article.objects.filter(create_date__gt=self.create_date).order_by('create_date').first()
 
 
 # 时间线
