@@ -209,9 +209,9 @@ REST_FRAMEWORK = {
 
 # 配置数据库
 MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
-MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'daydayup')
-MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'hpp')
-MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', '132435')
+MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', '补充')
+MYSQL_USER = os.getenv('IZONE_MYSQL_USER', '补充')
+MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', '补充')
 MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)
 
 DATABASES = {
